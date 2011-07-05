@@ -1,5 +1,5 @@
 #import "AppController.h"
-
+#include <unistd.h>
 
 @implementation AppController
 
@@ -93,7 +93,14 @@
 {
 	if( device && [device remoteNameRequest:nil] == kIOReturnSuccess )
 		return true;
-	
+
+    int repeat_count = 3;
+    do {
+        if( device && [device remoteNameRequest:nil] == kIOReturnSuccess )
+            return true;
+        usleep(500000L);
+    } while(--repeat_count);
+
 	return false;
 }
 
